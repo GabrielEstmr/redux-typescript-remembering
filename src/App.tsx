@@ -1,24 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators, State } from './state/index';//(actions, typeof State)
+
 function App() {
+
+  const dispatch = useDispatch();
+
+  //Actions
+  const { depositMoney, withdrawMoney, bankrupt } = bindActionCreators(actionCreators, dispatch);
+
+
+  //Access to state => bank state
+  const amount = useSelector((state: State) => state.bank)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>{amount}</h1>
+      <button onClick={() => depositMoney(1000)}>Deposit 1000</button>
+      <button onClick={() => withdrawMoney(500)}>Withdraw 500</button>
+      <button onClick={() => bankrupt()}>Bankrupt</button>
     </div>
   );
 }
